@@ -2,6 +2,7 @@
 #include <hyprutils/string/VarList.hpp>
 #include <print>
 #include <qapplication.h>
+#include <QCommandLineParser>
 #include <qqmlapplicationengine.h>
 #include <qquickstyle.h>
 #include <qtenvironmentvariables.h>
@@ -16,70 +17,49 @@ int main(int argc, char* argv[]) {
     QString appTitle;
     auto dialog = new CDialog();
 
-    for (int i = 1; i < argc; ++i) {
-        std::string_view arg = argv[i];
-
-        if (arg == "--title") {
-            if (i + 1 >= argc) {
-                std::print(stderr, "--title requires a parameter\n");
-                return 1;
-            }
-
-            dialog->title = argv[i + 1];
-
-            i++;
-            continue;
-        }
-
-        if (arg == "--apptitle") {
-            if (i + 1 >= argc) {
-                std::print(stderr, "--apptitle requires a parameter\n");
-                return 1;
-            }
-
-            appTitle = argv[i + 1];
-
-            i++;
-            continue;
-        }
-
-        if (arg == "--text") {
-            if (i + 1 >= argc) {
-                std::print(stderr, "--text requires a parameter\n");
-                return 1;
-            }
-
-            dialog->text = argv[i + 1];
-
-            i++;
-            continue;
-        }
-
-        if (arg == "--buttons") {
-            if (i + 1 >= argc) {
-                std::print(stderr, "--buttons requires a parameter\n");
-                return 1;
-            }
-
-            CVarList buttonz(argv[i + 1], 0, ';', true);
-
-            for (auto& b : buttonz) {
-                dialog->buttons.emplace_back(b.c_str());
-            }
-
-            i++;
-            continue;
-        }
-
-        std::print(stderr, "invalid arg {}\n", argv[i]);
-        return 1;
-    }
-
     QApplication app(argc, argv);
-    app.setApplicationName(appTitle.isEmpty() ? dialog->title : appTitle);
+    app.setApplicationVersion("0.1.0");
 
     if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_STYLE"))
         QQuickStyle::setStyle("Basic");
+
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Dialog");
+    parser.addHelpOption();
+    parser.addVersionOption();
+
+    QCommandLineOption appTitleOption(QStringList() << "a" << "app-title", "Set the app title (for window rules of your WM)", "app-title");
+    parser.addOption(appTitleOption);
+
+    QCommandLineOption titleOption(QStringList() << "t" << "title", "Set the dialog's title", "title");
+    parser.addOption(titleOption);
+
+    QCommandLineOption textOption(QStringList() << "T" << "text", "Set the dialog's text", "text");
+    parser.addOption(textOption);
+
+    QCommandLineOption buttonsOptions(QStringList() << "b" << "buttons", "Set the dialog's buttons", "buttons");
+    parser.addOption(buttonsOptions);
+
+    parser.process(app);
+
+    const QString argTitle = parser.value(titleOption);
+    dialog->title = argTitle;
+
+    const QString argAppTitle = parser.value(appTitleOption);
+    appTitle = argAppTitle;
+
+    const QString argText = parser.value(textOption);
+    dialog->text = argText;
+
+    const QString argButtons = parser.value(buttonsOptions);
+    if (!argButtons.isEmpty())
+    {
+        for(auto& b : argButtons.split(u';')){
+        dialog->buttons.emplace_back(b);
+        }
+    }
+
+    app.setApplicationName(appTitle.isEmpty() ? dialog->title : appTitle);
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("dialog", dialog);
