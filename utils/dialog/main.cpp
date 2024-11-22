@@ -1,5 +1,4 @@
 #include "Dialog.hpp"
-#include <hyprutils/string/VarList.hpp>
 #include <print>
 #include <qapplication.h>
 #include <QCommandLineParser>
@@ -7,8 +6,6 @@
 #include <qquickstyle.h>
 #include <qtenvironmentvariables.h>
 #include <QQmlContext>
-
-using namespace Hyprutils::String;
 
 int main(int argc, char* argv[]) {
     // disable logs to not trash the stdout
@@ -55,7 +52,7 @@ int main(int argc, char* argv[]) {
     if (!argButtons.isEmpty())
     {
         for(auto& b : argButtons.split(u';')){
-        dialog->buttons.emplace_back(b);
+        dialog->buttons.emplace_back(b.trimmed());
         }
     }
 
@@ -63,7 +60,7 @@ int main(int argc, char* argv[]) {
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("dialog", dialog);
-    engine.load("qrc:/qt/qml/org/hyprland/dialog/main.qml");
+    engine.load("file:utils/dialog/main.qml");
 
     return app.exec();
 }
