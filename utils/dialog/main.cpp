@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
     app.setApplicationVersion("0.1.0");
 
     if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_STYLE"))
-        QQuickStyle::setStyle("Basic");
+        QQuickStyle::setStyle("Fusion");
 
     QCommandLineParser parser;
     parser.setApplicationDescription("Dialog");

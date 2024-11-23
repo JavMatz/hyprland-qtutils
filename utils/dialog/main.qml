@@ -12,7 +12,7 @@ ApplicationWindow {
     property var windowPadding: 10
 
     minimumWidth: Math.max(fontMetrics.height * 10, mainLayout.Layout.minimumWidth) + mainLayout.anchors.margins * 2 + windowPadding * 2
-    minimumHeight: Math.max(fontMetrics.height * 10, mainLayout.Layout.minimumHeight) + mainLayout.anchors.margins * 2 + windowPadding * 2
+    minimumHeight: Math.max(fontMetrics.height * 7, mainLayout.Layout.minimumHeight) + mainLayout.anchors.margins * 2 + windowPadding * 2
     maximumWidth: minimumWidth
     maximumHeight: minimumHeight
     visible: true
@@ -42,7 +42,7 @@ ApplicationWindow {
 
     ColumnLayout {
         id: mainLayout
-        spacing: fontMetrics.height
+        spacing: fontMetrics.height * 0.5
 
         anchors {
             fill: parent
@@ -50,13 +50,11 @@ ApplicationWindow {
         }
 
         Text {
-            font.pointSize: fontMetrics.height
+            font.pointSize: fontMetrics.height * 0.9
             color: system.windowText
             text: dialog.dialogTitle
             Layout.alignment: Qt.AlignHCenter
         }
-
-        HSeparator {}
 
         Text {
             color: system.windowText
@@ -64,16 +62,9 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter
         }
 
-        Rectangle {
-            color: "transparent"
-            Layout.minimumHeight: 10
-            Layout.fillHeight: true
-        }
-
         RowLayout {
             spacing: 6
-            Layout.leftMargin: 20
-            Layout.alignment: Qt.AlignRight
+            Layout.alignment: Qt.AlignHCenter
 
             Repeater {
                 model: dialog.dialogButtons
