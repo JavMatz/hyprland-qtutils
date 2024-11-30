@@ -50,9 +50,9 @@ _deps
 CMakeUserPresets.json
 
 .rcc/
-hyprland-dialog
-hyprland-dialog_autogen/
-hyprland-dialog_qmltyperegistrations.cpp
+dialog
+dialog_autogen/
+dialog_qmltyperegistrations.cpp
 meta_types/
 org/
 qmltypes/
