@@ -16,7 +16,7 @@ qt_add_executable(hyprland-dialog
 )
 
 qt_add_qml_module(hyprland-dialog
-    URI org.hyprland.dialog
+    URI org.dialog.dialog
     VERSION 1.0
     QML_FILES main.qml
 )

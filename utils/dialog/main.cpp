@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("dialog", dialog);
-    engine.load("file:utils/dialog/main.qml");
+    engine.load("qrc:/qt/qml/org/dialog/dialog/main.qml");
 
     return app.exec();
 }
