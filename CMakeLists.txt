@@ -14,4 +14,4 @@ find_package(PkgConfig REQUIRED)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
-add_subdirectory(utils/dialog)
+add_subdirectory(src)
